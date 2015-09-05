@@ -49,13 +49,35 @@ void guardar (const tListaCorreos & correos, string dominio){
 }
 
 bool insertar(tListaCorreos & correos, const tCorreo & correo){
+	tCorreo temp;
 	bool esInsertado = false;
+	 int i = correos.contador;
 	if (correos.contador < MAX_CORREOS){
 		correos.listaMail[correos.contador] = correo;
+		while(correo.identificador < correos.listaMail[i - 1].identificador && i != 0){
+			temp = correos.listaMail[i - 1];
+			correos.listaMail[i - 1] = correos.listaMail[i];
+			correos.listaMail[i] = temp;
+			i--;
+		}
 		correos.contador++;
 		esInsertado = true;
 	}
 	return esInsertado;
+}
+
+bool buscar (const tListaCorreos & correos, string id, int & pos){
+	bool encontrado = false;
+	pos = 0;
+	while (pos < correos.contador && !encontrado){
+		if(id == correos.listaMail[pos].identificador){
+			encontrado = true;
+		}
+		else{
+			pos++;
+		}
+	}	
+	return encontrado;
 }
 
 bool borrar(tListaCorreos &correos, string id){
@@ -70,26 +92,6 @@ bool borrar(tListaCorreos &correos, string id){
 		borrado = true;
 	}
 return borrado;
-}
-
-
-bool buscar (const tListaCorreos & correos, string id, int & pos){
-	int ini = 0, fin = correos.contador - 1, mitad;
-	bool encontrado = false;
-	while ((ini <= fin) && !encontrado){
-		mitad = (ini + fin) / 2;
-		if(id < correos.listaMail[mitad].identificador){
-			fin = mitad - 1;
-		}
-		else if(correos.listaMail[mitad].identificador < id){
-			ini = mitad + 1;
-		}
-		else
-			encontrado = true;
-	}
-	if (encontrado) pos = mitad;
-	else pos = ini;
-	return encontrado;
 }
 
 void ordenar_AF(tListaCorreos & correos){
