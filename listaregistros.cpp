@@ -49,7 +49,7 @@ bool borrar (tListaRegistros & registros, string id){
 	int pos = buscar(registros, id);
 	if (pos != -1){
 		for (pos; pos < registros.contador; pos++){
-			registros.registros[pos] = registros.registros[pos+1];
+			registros.registros[pos] = registros.registros[pos + 1];
 		}
 		registros.contador--;
 		esBorrar = true;

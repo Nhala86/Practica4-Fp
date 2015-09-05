@@ -145,7 +145,7 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 		if (borrar (listaReg, id)){
 			cout << "El mensaje se ha eliminado correctamente" << endl;	
 			while(contador < gestor.usuarios.contador && !ok){
-				if((buscar(gestor.usuarios.usuario[contador].recibidos, id) != - 1) || (buscar(gestor.usuarios.usuario[contador].recibidos, id) != - 1)){
+				if((buscar(gestor.usuarios.usuario[contador].recibidos, id) != - 1) || (buscar(gestor.usuarios.usuario[contador].enviados, id) != - 1)){
 					ok = true;
 				}
 				contador++;
