@@ -161,14 +161,14 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 
 void lecturaRapida(tGestor & gestor, tListaRegistros & listaReg){
 	int posicion;
-	ordenar_AF (gestor.correos);
-	for (int i = 0; i < listaReg.contador; i++){
+	tListaCorreos aux = gestor.correos;
+	ordenar_AF (aux);
+	for (int i = 0; i < aux.contador; i++){
 		if (listaReg.registros[i].leido){
-			buscar (gestor.correos, listaReg.registros[i].idcorreo, posicion);
-			mostrarCorreo (gestor.correos.listaMail[posicion]);
+			buscar (aux, listaReg.registros[i].idcorreo, posicion);
+			mostrarCorreo (aux.listaMail[posicion]);
 			listaReg.registros[i].leido = true;
 		}
-		else cout << "error";
 	}
 	system("pause");
 }
