@@ -17,8 +17,8 @@ bool cargar (tListaUsuarios & usuarios, string dominio){
 	archivo.open(nombreFichero);
 	if (archivo.is_open()){
 		tUsuario usuario;
-		while (cargar(usuario, archivo)){ 
-			aniadir (usuarios, usuario); 
+		while (cargar(usuario, archivo)){
+			aniadir (usuarios, usuario);
 		}
 		archivo.close();
 		ok = true;
@@ -35,14 +35,14 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 	archivo.open(nombreFichero);
 	if (archivo.is_open()){
 		for(int i = 0; i < usuarios.contador; i++){
-			guardar(usuarios.usuario[i], archivo);			
+			guardar(usuarios.usuario[i], archivo);
 		}
 		archivo << "XXX";
-		archivo.close();		
+		archivo.close();
 	}
 	else{
 		cout << " No se puede guardar el archivo";
-	}	
+	}
 }
 
 bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario){
@@ -78,7 +78,7 @@ bool buscarUsuario (const tListaUsuarios & usuarios, string id, int & posicion){
 void ordenar (tListaUsuarios & usuarios){
 	tUsuario nuevo;
 	int posicion = 0;
-	nuevo = usuarios.usuario[usuarios.contador - 1];	
+	nuevo = usuarios.usuario[usuarios.contador - 1];
 	while ((posicion < usuarios.contador -1) && !(usuarios.usuario[posicion].nombre > nuevo.nombre)){
 		posicion ++;
 	}
@@ -87,4 +87,3 @@ void ordenar (tListaUsuarios & usuarios){
 	}
 	usuarios.usuario[posicion] = nuevo;
 }
-

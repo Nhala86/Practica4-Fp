@@ -20,7 +20,7 @@ void cargar (tListaRegistros & registros, ifstream & archivo){
 			cargarRegistro(registro, archivo);
 			insertar(registros, registro);
 		}
-	}	
+	}
 }
 
 void guardar (const tListaRegistros & registros, ofstream & archivo){

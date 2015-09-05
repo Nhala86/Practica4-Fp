@@ -12,18 +12,18 @@ void inicializar(tListaCorreos & correos){
 }
 
 bool cargar(tListaCorreos & correos, string dominio){
-	bool esCargar;	
+	bool esCargar;
 	ifstream archivo;
 	inicializar(correos);
 	string ficheroCorreo = dominio + "_" + mailCorreo;
 	archivo.open(ficheroCorreo);
-	if (archivo.is_open()){	
+	if (archivo.is_open()){
 		tCorreo correo;
 		while (cargar (correo, archivo)){
 			insertar(correos, correo);
 		}
 		archivo.close();
-		esCargar = true;		
+		esCargar = true;
 	}
 	else{
 		cout << "No se ha podido cargar el archivo";
