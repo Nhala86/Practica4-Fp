@@ -1,0 +1,276 @@
+#include<iostream>
+#include<iomanip>
+#include<fstream>
+#include<string>
+using namespace std;
+
+#include"gestor.h"
+
+bool arrancar (tGestor & gestor, string dominio){
+	inicializar (gestor, DOMINIO);
+	return (cargar(gestor.usuarios, dominio) && cargar (gestor.correos, dominio));
+}
+ 
+void apagar(const tGestor & gestor){
+	system("cls");
+	cout << "Cerrando gestor de correo " << gestor.dominio << endl;
+	guardar (gestor.usuarios, gestor.dominio);
+	guardar (gestor.correos, gestor.dominio);
+}
+
+bool crearCuenta(tGestor & gestor){
+	tUsuario usuario;
+	bool ok = false;
+	int posicion;
+	string id, contrasenia;
+	cout << "Selecciona tu id: ";
+	cin >> id;
+	cin.sync();
+	id = id + "@" + gestor.dominio;
+	while(buscarUsuario (gestor.usuarios,id, posicion)){
+		cout << "Id de usuario no disponible" << endl;
+		cout << "Escoja otra Id: ";
+		cin >> id;
+		cin.sync();
+		id = id + "@" + gestor.dominio;
+	}
+	cout << "Selecciona una contrasenia: ";
+	cin >> contrasenia;
+	cin.sync();
+	inicializar (usuario, id, contrasenia);
+	if (aniadir (gestor.usuarios, usuario)) ok = true;
+	else cout << "No se puede aniadir a la lista";
+	
+	cout << "Se creo correctamente su cuenta" << endl;
+	cout << "Iniciando sesion en " << gestor.dominio << endl;
+	buscarUsuario (gestor.usuarios, id, gestor.usuarioActivo);
+	system("pause");
+	return ok;
+}
+
+bool iniciarSesion (tGestor & gestor){
+	bool ok = false;
+	int posicion;
+	string id, contrasenia;
+	cout << "Bienvenido a tu correo " << gestor.dominio << endl;
+	cout << "Introduce tu direccion de correo: ";
+	cin >> id;
+	cin.sync();
+	if (buscarUsuario (gestor.usuarios, id, posicion)){
+		cout << "Introduce tu contrasenia: ";
+		cin >> contrasenia;
+		if (validarContrasenia (gestor.usuarios.usuario[posicion], contrasenia)){
+			gestor.usuarioActivo = posicion;
+			cout << "Iniciando sesion" << endl;;
+			ok = true;
+		}
+		else cout << "No se pudo iniciar sesion" << endl;
+	}
+	else {
+		cout << "Usuario no existente" << endl;
+	}
+	system("pause");
+	system("cls");
+	return ok;
+}
+
+void leerCorreo(tGestor & gestor, tListaRegistros & listaReg){
+	tCorreo respuestaMail;
+	string fila, cabecera;
+	int correo, opcion, posicion;
+	cout << "Cual correo deseas leer (escribe el numero del correo): ";
+	cin >> correo;
+	system("cls");
+	if (correo > 0 && correo <= listaReg.contador){
+		buscar (gestor.correos, listaReg.registros[correo-1].idcorreo, posicion);
+		mostrarCorreo (gestor.correos.listaMail[posicion]);
+		correoLeido (listaReg, listaReg.registros[correo-1].idcorreo);
+		lineaDeSeparacion ();
+		cout << "Selecciona una opcion:" << endl;
+		cout << "   " << "1.- Contestar correo" << endl;
+		cout << "   " << "0.- Volver a la bandeja" << endl;
+		lineaDeSeparacion ();
+		do{
+		cout << "Opcion: ";
+		cin >> opcion;
+		
+			if (opcion == 1){
+				correoContestacion (gestor.correos.listaMail[posicion], respuestaMail, gestor.correos.listaMail[posicion].destinatario);
+				enviarCorreo (gestor, respuestaMail);
+			}			
+		}while (opcion != 0 && opcion > 1 && opcion < 0);
+	}	
+}
+
+void enviarCorreo (tGestor & gestor, const tCorreo & correo){
+	tRegistro registro;
+	int posicion;
+	if (insertar(gestor.correos, correo)){
+		registro.leido = true;
+		registro.idcorreo = correo.identificador;
+		if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
+			registro.leido = false;
+			if (buscarUsuario (gestor.usuarios, correo.destinatario, posicion)){
+				if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro)){
+					cout << "Correo enviado" << endl;
+				}
+				else {
+					cout << "La bandeja del destinatario está llena" << endl;
+				}
+			}
+			else {
+				cout << "Destinatario desconocido. No se ha podido encontrar" << endl;
+			}
+		}
+	}
+}
+
+void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
+	int opcion;
+	cout << "Selecciona el numero del correo que deseas borrar: ";
+	cin >> opcion;	
+	if (opcion > 0 && opcion <= listaReg.contador){
+		if (borrar (listaReg, listaReg.registros[opcion - 1].idcorreo)){
+			cout << "El mensaje se ha eliminado correctamente" << endl;	
+		}
+		else{
+			cout << "El correo seleccionado no existe" << endl;
+		}
+	}
+}
+
+void lecturaRapida(tGestor & gestor, tListaRegistros & listaReg){
+	int posicion;
+	ordenar_AF (gestor.correos);
+	for (int i = 0; i < listaReg.contador; i++){
+		if (listaReg.registros[i].leido){
+			buscar (gestor.correos, listaReg.registros[i].idcorreo, posicion);
+			mostrarCorreo (gestor.correos.listaMail[posicion]);
+			listaReg.registros[i].leido = true;
+		}
+		else cout << "error";
+	}
+	system("pause");
+}
+
+void inicializar (tGestor & gestor, string dominio){
+	gestor.dominio = dominio;
+}
+
+void gestionarSesion(tGestor & gestor){
+	tCorreo nuevoCorreo;
+	bool esEntrada = true;
+	int opcion;
+	do{
+		mostrarInterFazUsuario(gestor,esEntrada);
+		cin >> opcion;
+		if (opcion == 1){
+			if (!esEntrada){
+				leerCorreo (gestor, gestor.usuarios.usuario[gestor.usuarioActivo].enviados);
+			}
+			else{
+				leerCorreo (gestor, gestor.usuarios.usuario[gestor.usuarioActivo].recibidos);
+			}
+		}
+		else if (opcion == 2){
+			system("cls");
+			correoNuevo (nuevoCorreo, gestor.usuarios.usuario[gestor.usuarioActivo].nombre);
+			enviarCorreo(gestor, nuevoCorreo);
+			system ("pause");
+		}
+		else if (opcion == 3){
+			if(!esEntrada){
+				borrarCorreo (gestor, gestor.usuarios.usuario[gestor.usuarioActivo].enviados);
+			}
+			else{
+				borrarCorreo (gestor, gestor.usuarios.usuario[gestor.usuarioActivo].recibidos);
+			}			
+		}
+		else if (opcion == 4){
+			esEntrada = !esEntrada;
+		}
+		else if (opcion == 5){
+			lecturaRapida (gestor, gestor.usuarios.usuario[gestor.usuarioActivo].recibidos);
+		}
+	} while (opcion != 0);
+	system ("cls");
+}
+
+void mostrarInterFazUsuario (tGestor & gestor, bool esEntrada){
+	system ("cls");
+	cout << "Sesion de " << gestor.usuarios.usuario[gestor.usuarioActivo].nombre << endl;
+	for(int i = 0; i < 30; i++){
+		cout << "-";
+	}
+	cout << "Bandeja de ";
+	if (esEntrada){
+		cout << "entrada";
+		lineasDeCabecera ();
+	} 
+	else{
+		cout << "salida-";
+		lineasDeCabecera ();
+	} 
+	lineaDeSeparacion ();
+	if (!esEntrada){
+		cout << "L" << setw(2) << "N" << setw(15) << "DESTINATARIO" << setw(25) << "ASUNTO" << setw(35) << "FECHA" << endl;
+	}
+	else cout << "L" << setw(2) << "N" << setw(10) << "EMISOR" << setw(30) << "ASUNTO" << setw(35) << "FECHA" << endl;
+	lineaDeSeparacion ();
+	verBandeja (gestor,esEntrada);
+	lineaDeSeparacion ();
+	mostrarMenu(esEntrada);	
+}
+
+void verBandeja (const tGestor & gestor, bool esEntrada){
+	int posicion;
+	tUsuario usuario = gestor.usuarios.usuario[gestor.usuarioActivo];
+	if (!esEntrada){
+		for (int i = 0; i < usuario.enviados.contador; i++){
+			if (buscar (gestor.correos, usuario.enviados.registros[i].idcorreo, posicion)){
+				cout << " " << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].destinatario << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(35) << mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
+			}
+		}
+	}
+	else{
+		for (int i = 0; i < usuario.recibidos.contador; i++){
+			if (!usuario.recibidos.registros[i].leido){
+				cout << "*";
+			}
+			else {
+				cout << " ";
+			}
+			if (buscar (gestor.correos, usuario.recibidos.registros[i].idcorreo, posicion)){
+				cout << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].emisor << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(35)<< mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
+			}
+		}
+	}
+}
+
+void mostrarMenu (bool esEntrada){
+	cout << endl;
+	cout << "Selecciona una opcion: " << endl;
+	cout << "" << endl;
+	cout << "1.- Leer correo" << endl;
+	cout << "2.- Enviar correo" << endl;
+	cout << "3.- Eliminar correo" << endl;
+	cout << "4.- Ver bandeja de ";
+	if (esEntrada) cout << "salida" << endl;
+	else cout << "entrada" << endl;
+	cout << "5.- Lectura rapida de correos no leidos" << endl;
+	cout << "0.- Cerrar Sesion Activa" << endl;
+	lineaDeSeparacion ();
+	cout << "Opcion: ";
+}
+
+void lineaDeSeparacion (){
+	for (int i = 0; i < 80; i++){
+		cout << "-";
+	}
+}
+
+void lineasDeCabecera (){
+	for(int i = 0; i < 32; i++){
+		cout << "-";
+	}
+}
