@@ -21,7 +21,7 @@ typedef struct{
 }tListaCorreos;
 
 /**
-** Inicializo la lista 
+** Inicializo la lista
 **/
 
 void inicializar(tListaCorreos & correos);
@@ -33,8 +33,8 @@ void inicializar(tListaCorreos & correos);
 bool cargar(tListaCorreos & correos, string dominio);
 
 /**
-** Implementa el guardado de la lista de correos en el fichero de correos de nombre <NombreDominio>_ correos.txt  
-** Guarda en fichero la lista de correos 
+** Implementa el guardado de la lista de correos en el fichero de correos de nombre <NombreDominio>_ correos.txt
+** Guarda en fichero la lista de correos
 **/
 
 void guardar (const tListaCorreos & correos, string dominio);
@@ -46,8 +46,11 @@ void guardar (const tListaCorreos & correos, string dominio);
 
 bool insertar(tListaCorreos & correos, const tCorreo & correo);
 
+
+bool borrar(tListaCorreos &correos, string id);
+
 /**
-** Dado un identificador de correo y la lista, devuelve, si dicho identificador existe en la lista, su posición y el valor true 
+** Dado un identificador de correo y la lista, devuelve, si dicho identificador existe en la lista, su posición y el valor true
 ** Si no existe en la lista, la posición que le correspondería y el valor false
 **/
 

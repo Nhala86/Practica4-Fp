@@ -133,12 +133,25 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 }
 
 void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
-	int opcion;
+	int opcion, contador = 0;
 	cout << "Selecciona el numero del correo que deseas borrar: ";
 	cin >> opcion;
 	if (opcion > 0 && opcion <= listaReg.contador){
+			id = listaReg.registro[numCorreo - 1].idcorreo;
 		if (borrar (listaReg, listaReg.registros[opcion - 1].idcorreo)){
-			cout << "El mensaje se ha eliminado correctamente" << endl;
+			cout << "El registro se ha eliminado correctamente" << endl;
+
+//BORRADO DEL MENSAJE DE LISTACORREOS
+			while(contador < gestor.usuarios.contador && !existe){
+							if((buscar(gestor.usuarios.usuario[contador].recibidos, id) != -1) || (buscar(gestor.usuarios.usuario[contador].enviados, id) != -1)){//si no existe el identificador en ninguna lista de registros de ningun usuario, entonces borramos el correo de la lista de correos
+								existe = true;
+							}
+							cont++;
+						}
+						if(!existe && borrar(gestor.correos, id))
+						cout << "El mensaje se ha eliminado correctamente" << endl;
+					}
+
 		}
 		else{
 			cout << "El correo seleccionado no existe" << endl;

@@ -22,7 +22,7 @@ typedef struct{
 }tListaRegistros;
 
 /**
-** Inicializo el contador 
+** Inicializo el contador
 **/
 
 void inicializar (tListaRegistros & registros);
@@ -41,7 +41,7 @@ void guardar (const tListaRegistros & registros, ofstream & archivo);
 
 /**
 ** Dado un registro lo inserta al final de la lista. Si la lista está llena devuelve false, en otro caso devuelve true
-** Se ejecutará cuando un usuario envíe un correo, se insertará el registro correspondiente en la lista de registros que representa su bandeja de salida 
+** Se ejecutará cuando un usuario envíe un correo, se insertará el registro correspondiente en la lista de registros que representa su bandeja de salida
 ** También en las listas de registros que representan las bandejas de entrada de cada uno de los destinatarios del correo
 **/
 
