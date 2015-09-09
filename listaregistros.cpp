@@ -32,13 +32,11 @@ void guardar (const tListaRegistros & registros, ofstream & archivo){
 bool insertar (tListaRegistros & registros, tRegistro registro){
 	bool esInsertar = false;
 	if (registros.contador < MAX_REGS){
-	int posicion =	buscar(registros, registro.idcorreo);
-	if(posicion != -1){
-		for(int i = registros.contador; i > posicion; i--)
-			registros.registros[i] = registros.registros[i - 1];
-		registros.registros[posicion] = registro;
-		registros.contador++;
-		esInsertar = true;
+		int posicion =	buscar(registros, registro.idcorreo);
+		if(posicion != -1){
+			registros.registros[registros.contador] = registro;
+			registros.contador++;
+			esInsertar = true;
 		}
 	}
 	return esInsertar;

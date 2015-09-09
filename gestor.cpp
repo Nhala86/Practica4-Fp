@@ -38,17 +38,19 @@ bool crearCuenta(tGestor & gestor){
 	cin >> contrasenia;
 	cin.sync();
 	inicializar (usuario, id, contrasenia);
-	if (aniadir (gestor.usuarios, usuario)) ok = true;
-	else cout << "No se puede aniadir a la lista";
-
-	cout << "Se creo correctamente su cuenta" << endl;
-	cout << "Iniciando sesion en " << gestor.dominio << endl;
-	buscarUsuario (gestor.usuarios, id, gestor.usuarioActivo);
+	if (aniadir (gestor.usuarios, usuario)){
+		ok = true;
+		cout << "Se creo correctamente su cuenta" << endl;
+	    cout << "Iniciando sesion en " << gestor.dominio << endl;
+		buscarUsuario (gestor.usuarios, id, gestor.usuarioActivo);
+	}
+	else cout << "No se puede aniadir a la lista";	
 	system("pause");
 	return ok;
 }
 
 bool iniciarSesion (tGestor & gestor){
+	system("cls");
 	bool ok = false;
 	int posicion;
 	string id, contrasenia;
@@ -61,7 +63,7 @@ bool iniciarSesion (tGestor & gestor){
 		cin >> contrasenia;
 		if (validarContrasenia (gestor.usuarios.usuario[posicion], contrasenia)){
 			gestor.usuarioActivo = posicion;
-			cout << "Iniciando sesion" << endl;;
+			cout << "Iniciando sesion" << gestor.usuarios.usuario[posicion].nombre << endl;
 			ok = true;
 		}
 		else cout << "No se pudo iniciar sesion" << endl;
@@ -162,13 +164,16 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 }
 
 void lecturaRapida(tGestor & gestor, tListaRegistros & listaReg){
+	system("cls");
 	int posicion;
-	tListaCorreos aux = gestor.correos;
+	tListaCorreos aux;
+	aux = gestor.correos;
 	ordenar_AF (aux);
-	for (int i = 0; i < aux.contador; i++){
-		if (listaReg.registros[i].leido){
+	for (int i = 0; i < listaReg.contador; i++){
+		if (!listaReg.registros[i].leido){
 			buscar (aux, listaReg.registros[i].idcorreo, posicion);
 			mostrarCorreo (aux.listaMail[posicion]);
+			lineaDeSeparacion ();
 			listaReg.registros[i].leido = true;
 		}
 	}
@@ -220,7 +225,7 @@ void gestionarSesion(tGestor & gestor){
 
 void mostrarInterFazUsuario (tGestor & gestor, bool esEntrada){
 	system ("cls");
-	cout << "Sesion de " << gestor.usuarios.usuario[gestor.usuarioActivo].nombre << endl;
+	cout << "Sesion de  " << gestor.usuarios.usuario[gestor.usuarioActivo].nombre << endl;
 	for(int i = 0; i < 30; i++){
 		cout << "-";
 	}
@@ -235,9 +240,9 @@ void mostrarInterFazUsuario (tGestor & gestor, bool esEntrada){
 	}
 	lineaDeSeparacion ();
 	if (!esEntrada){
-		cout << "L" << setw(2) << "N" << setw(15) << "DESTINATARIO" << setw(25) << "ASUNTO" << setw(35) << "FECHA" << endl;
+		cout << "L" << setw(2) << "N" << setw(15) << "DESTINATARIO" << setw(25) << "ASUNTO" << setw(30) << "FECHA" << endl;
 	}
-	else cout << "L" << setw(2) << "N" << setw(10) << "EMISOR" << setw(30) << "ASUNTO" << setw(35) << "FECHA" << endl;
+	else cout << "L" << setw(2) << "N" << setw(10) << "EMISOR" << setw(30) << "ASUNTO" << setw(30) << "FECHA" << endl;
 	lineaDeSeparacion ();
 	verBandeja (gestor,esEntrada);
 	lineaDeSeparacion ();
@@ -250,7 +255,7 @@ void verBandeja (const tGestor & gestor, bool esEntrada){
 	if (!esEntrada){
 		for (int i = 0; i < usuario.enviados.contador; i++){
 			if (buscar (gestor.correos, usuario.enviados.registros[i].idcorreo, posicion)){
-				cout << " " << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].destinatario << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(35) << mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
+				cout << " " << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].destinatario << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(30) << mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
 			}
 		}
 	}
@@ -263,7 +268,7 @@ void verBandeja (const tGestor & gestor, bool esEntrada){
 				cout << " ";
 			}
 			if (buscar (gestor.correos, usuario.recibidos.registros[i].idcorreo, posicion)){
-				cout << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].emisor << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(35)<< mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
+				cout << setw(2) << i + 1 << " " << gestor.correos.listaMail[posicion].emisor << setw(25) << gestor.correos.listaMail[posicion].asunto << setw(30) << mostrarSoloDia (gestor.correos.listaMail[posicion].fecha) << endl;
 			}
 		}
 	}

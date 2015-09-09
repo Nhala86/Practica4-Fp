@@ -85,7 +85,7 @@ bool borrar(tListaCorreos &correos, string id){
 	int posicion;
 	buscar(correos, id , posicion);
 	if(posicion != -1){	//Si existe se proce a borrar el registro de la lista
-				for (posicion; posicion < correos.contador; posicion++){
+		for (posicion; posicion < correos.contador; posicion++){
 			correos.listaMail[posicion] = correos.listaMail[posicion + 1]; //Se desplazan los registros desde esa posicion a la derecha
 		}
 		correos.contador--;
