@@ -47,7 +47,7 @@ void guardar (const tListaCorreos & correos, string dominio){
 		cout << "No sé puedo guardar el archivo";
 	}
 }
-
+/**
 bool insertar(tListaCorreos & correos, const tCorreo & correo){
 	tCorreo temp;
 	bool esInsertado = false;
@@ -64,6 +64,9 @@ bool insertar(tListaCorreos & correos, const tCorreo & correo){
 		esInsertado = true;
 	}
 	return esInsertado;
+}
+**/
+bool insertar(tListaCorreos & correos, const tCorreo & correo){
 }
 
 bool buscar (const tListaCorreos & correos, string id, int & pos){
