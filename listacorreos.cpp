@@ -47,7 +47,7 @@ void guardar (const tListaCorreos & correos, string dominio){
 		cout << "No sé puedo guardar el archivo";
 	}
 }
-/**
+
 bool insertar(tListaCorreos & correos, const tCorreo & correo){
 	tCorreo temp;
 	bool esInsertado = false;
@@ -64,9 +64,6 @@ bool insertar(tListaCorreos & correos, const tCorreo & correo){
 		esInsertado = true;
 	}
 	return esInsertado;
-}
-**/
-bool insertar(tListaCorreos & correos, const tCorreo & correo){
 }
 
 bool buscar (const tListaCorreos & correos, string id, int & pos){
@@ -87,14 +84,15 @@ bool borrar(tListaCorreos &correos, string id){
 	bool borrado = false;
 	int posicion;
 	buscar(correos, id , posicion);
-	if(posicion != -1){	//Si existe se proce a borrar el registro de la lista
-		for (posicion; posicion < correos.contador; posicion++){
-			correos.listaMail[posicion] = correos.listaMail[posicion + 1]; //Se desplazan los registros desde esa posicion a la derecha
+		if(posicion != -1){	//Si existe se proce a borrar el registro de la lista
+			for (posicion; posicion < correos.contador; posicion++){
+				correos.listaMail[posicion] = correos.listaMail[posicion + 1]; //Se desplazan los registros desde esa posicion a la derecha
+			}
+			correos.contador--;
+			borrado = true;
 		}
-		correos.contador--;
-		borrado = true;
-	}
-return borrado;
+	
+	return borrado;
 }
 
 void ordenar_AF(tListaCorreos & correos){

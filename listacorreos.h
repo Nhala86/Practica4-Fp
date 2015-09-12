@@ -47,6 +47,8 @@ void guardar (const tListaCorreos & correos, string dominio);
 bool insertar(tListaCorreos & correos, const tCorreo & correo);
 
 
+
+
 bool borrar(tListaCorreos &correos, string id);
 
 /**
