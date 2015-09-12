@@ -57,7 +57,7 @@ bool borrar (tListaRegistros & registros, string id){
 
 bool correoLeido (tListaRegistros & registros, string id){
 	bool esLeido = false;
-	int pos = buscar(registros, id);
+	int pos = buscar(registros, id);	
 	if (pos != -1){
 		registros.registros[pos].leido = true;
 		esLeido = true;
@@ -76,11 +76,10 @@ int buscar (const tListaRegistros & registros, string id){
 		else if(registros.registros[mitad].idcorreo < id){
 			ini = mitad + 1;
 		}
-		else
-			encontrado = true;
+		else encontrado = true;
 	}
 	if (encontrado) pos = mitad;
-	else pos = -1;
+	else pos = - 1;
 	return encontrado;
 }
 
