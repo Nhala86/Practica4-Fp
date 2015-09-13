@@ -6,9 +6,9 @@ using namespace std;
 #include"usuario.h"
 
  // Declaro las constantes para el maximo de usuarios y el nombre de .txt
- 
+
 const string listaUsuarios = "Usuarios.txt";
-const int MAX_USUARIOS = 50;
+const int MAX_USUARIOS = 2;
 
 // Declaro la estructura que tiene la lista de usuarios
 

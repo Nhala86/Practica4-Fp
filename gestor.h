@@ -44,7 +44,7 @@ bool crearCuenta(tGestor & gestor);
 /**
 ** Lee los datos de usuario necesarios para validar la cuenta (id y contraseña)
 ** Si el usuario existe y la contraseña coincide, registra al usuario como usuario activo
-** Devuelve un booleano indicando si la operación tuvo éxito 
+** Devuelve un booleano indicando si la operación tuvo éxito
 **/
 
 bool iniciarSesion (tGestor & gestor);
@@ -58,7 +58,7 @@ void leerCorreo(tGestor & gestor, tListaRegistros & listaReg);
 
 /**
 ** Implementa el envío del correo en la aplicación. Para ello el correo recibido como parámetro es insertado en la lista de correo
-** Si ha habido éxito, se inserta el registro en la lista de registros enviados del emisor 
+** Si ha habido éxito, se inserta el registro en la lista de registros enviados del emisor
 ** y se intenta insertar igualmente un registro de dicho correo en la lista de registros recibidos del destinatario del correo
 ** Si el destinatario no existe o si su bandeja de entrada está llena, entonces se mostrará un mensaje de error
 **/
@@ -89,7 +89,7 @@ void inicializar (tGestor & gestor, string dominio);
  /**
 ** Funcion encargada del menu de la sesion. Es llamada por el main
 **/
- 
+
 void gestionarSesion(tGestor & gestor);
 
 /**

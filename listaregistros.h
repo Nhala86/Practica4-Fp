@@ -5,7 +5,7 @@ using namespace std;
 
 // Declaro la constante del maximo de registros que puede tener la lista de registros
 
-const int MAX_REGS = 10;
+const int MAX_REGS = 3;
 
 // Defino la estructura que tiene un registro: una identificacion de correo y un boleano encargado de decir: 0 si ha sido leido el mensaje o 1 si no ha sido leido
 

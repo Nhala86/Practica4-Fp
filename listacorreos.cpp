@@ -22,13 +22,13 @@ bool cargar(tListaCorreos & correos, string dominio){
 		while (cargar (correo, archivo)){
 			insertar(correos, correo);
 		}
-		archivo.close();
 		esCargar = true;
 	}
 	else{
-		cout << "No se ha podido cargar el archivo";
+		cout << "No se ha podido cargar el archivo de correos" << endl;
 		esCargar = false;
 	}
+	archivo.close();
 	return esCargar;
 }
 
@@ -37,6 +37,7 @@ void guardar (const tListaCorreos & correos, string dominio){
 	string ficheroCorreo = dominio + "_" + mailCorreo;
 	archivo.open(ficheroCorreo);
 	if (archivo.is_open()){
+//		cout << correos.contador;system("pause");
 		for(int i = 0; i < correos.contador; i++){
 			guardar(correos.listaMail[i], archivo);
 		}
@@ -76,7 +77,7 @@ bool buscar (const tListaCorreos & correos, string id, int & pos){
 		else{
 			pos++;
 		}
-	}	
+	}
 	return encontrado;
 }
 
@@ -91,7 +92,7 @@ bool borrar(tListaCorreos &correos, string id){
 			correos.contador--;
 			borrado = true;
 		}
-	
+
 	return borrado;
 }
 

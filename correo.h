@@ -15,7 +15,7 @@ typedef struct{
 	string asunto;
 	string contenido;
 	tFecha fecha;
-	string identificador;	
+	string identificador;
 }tCorreo;
 
 /**
@@ -109,11 +109,5 @@ void eliminarRe (tCorreo & correo);
 **/
 
 bool operator< (const tCorreo & correo1, const tCorreo & correo2);
-	
+
 #endif
-
-
-
-
-
- 

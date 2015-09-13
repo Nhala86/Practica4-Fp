@@ -26,9 +26,9 @@ void contenidoCorreo (string & contenido){
 		getline(cin, linea);
 		if (linea != "XXX"){
 			flujo << linea << endl;
-		} 			
+		}
 	}while (linea != "XXX");
-	contenido = flujo.str();	
+	contenido = flujo.str();
 }
 
 void asuntoCorreo (string & asunto){
@@ -65,6 +65,7 @@ void correoContestacion(const tCorreo & correoOriginal, tCorreo & correo, string
 	for (int i = 0; i < 80; i++){
 		correo.contenido += "-";
 	}
+	correo.contenido += '\n';
 	correo.contenido += obtenerCabecera(correoOriginal);
 	correo.contenido += correoOriginal.contenido;
 }
@@ -79,7 +80,7 @@ string obtenerCabecera(const tCorreo & correo){
 	informacion += mostrarFecha(correo.fecha) + "\n";
 	informacion += "Para: " + correo.destinatario + "\n";
 	informacion += "Asunto: " + correo.asunto + "\n" + "\n";
-	
+
 	return informacion;
 }
 
@@ -107,8 +108,8 @@ void guardar(const tCorreo & correo, ofstream & archivo){
 	archivo << correo.emisor << endl;
 	archivo << correo.destinatario << endl;
 	archivo << correo.asunto << endl;
-	archivo << correo.contenido << endl;
-	archivo << "X" << endl;	
+	archivo << correo.contenido;
+	archivo << "X" << endl;
 }
 
 string mostrarFecha(tFecha fecha){
@@ -131,7 +132,7 @@ string mostrarSoloDia(tFecha fecha){
 void mostrarCorreo (tCorreo correo){
 	string fila, inicio;
 	inicio = obtenerCabecera (correo);
-	fila = aCadena (correo);	
+	fila = aCadena (correo);
 	cout << inicio << fila << endl;
 }
 
@@ -140,7 +141,7 @@ void eliminarRe (tCorreo & correo){
 	if (auxiliar.substr(0,4) == "Re: "){
 		auxiliar.erase (0,4);
 		correo.asunto = auxiliar;
-	}	
+	}
 }
 
 bool operator< (const tCorreo & correo1, const tCorreo & correo2){

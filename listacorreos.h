@@ -7,7 +7,7 @@ using namespace std;
 
 // Declaro las constantes del maximo de correos que puede tener la lista de correos y el nombre del .txt
 
-const int MAX_CORREOS = 50;
+const int MAX_CORREOS = 4;
 const string mailCorreo = "ListaCorreo.txt";
 
 /**

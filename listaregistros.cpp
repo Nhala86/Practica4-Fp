@@ -32,12 +32,9 @@ void guardar (const tListaRegistros & registros, ofstream & archivo){
 bool insertar (tListaRegistros & registros, tRegistro registro){
 	bool esInsertar = false;
 	if (registros.contador < MAX_REGS){
-		int posicion =	buscar(registros, registro.idcorreo);
-		if(posicion != -1){
 			registros.registros[registros.contador] = registro;
 			registros.contador++;
 			esInsertar = true;
-		}
 	}
 	return esInsertar;
 }
@@ -57,7 +54,7 @@ bool borrar (tListaRegistros & registros, string id){
 
 bool correoLeido (tListaRegistros & registros, string id){
 	bool esLeido = false;
-	int pos = buscar(registros, id);	
+	int pos = buscar(registros, id);
 	if (pos != -1){
 		registros.registros[pos].leido = true;
 		esLeido = true;
@@ -80,7 +77,7 @@ int buscar (const tListaRegistros & registros, string id){
 	}
 	if (encontrado) pos = mitad;
 	else pos = - 1;
-	return encontrado;
+	return pos;
 }
 
 void cargarRegistro (tRegistro & registro, ifstream & archivo){

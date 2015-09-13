@@ -12,7 +12,7 @@ bool cargar(tUsuario & usuario, ifstream & archivo){
 	if (usuario.nombre != CENTINELA){
 		archivo >> usuario.contrasenia;
 		cargar(usuario.recibidos, archivo);
-		cargar(usuario.enviados, archivo);		
+		cargar(usuario.enviados, archivo);
 	}
 	else{
 		ok = false;
@@ -51,5 +51,3 @@ bool validarContrasenia(const tUsuario & usuario, string contrasenia){
 	}
 	return ok;
 }
-
-

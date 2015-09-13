@@ -27,9 +27,11 @@ int menu(int & opcion);
 int main(){
 	tGestor gestor;
 	int opcion;
-	
+
 	if (!arrancar (gestor, DOMINIO)){
-		cout << " Error!.. no se ha podido cargar el fichero" << endl;
+		cout << "Se inician listas vacias" << endl;
+		system("pause");
+		system ("cls");
 	}
 	do{
 		opcion = menu(opcion);
@@ -37,14 +39,14 @@ int main(){
 		switch (opcion){
 			case 1: if (iniciarSesion (gestor)){ // Al iniciar sesion cargara el correo del usuario correspondiente, si el usuario no existe le devolvera un mensaje de "Usuario no existente"
 						gestionarSesion (gestor);
-						
+
 					}
 				break;
 			case 2: if (crearCuenta (gestor)){ // Creará una cuenta nueva de usuario, si ni tiene una
 						gestionarSesion(gestor);
 					}
 				break;
-		}	
+		}
 	} while (opcion != 0); // si la opcion es 0; guardara en cada archivo .txt la informacion correspondiente a cada archivo para poderlo cargar la proxima vez
 	apagar (gestor); // Guarda en los archivo .txt correspondientes y cierra el programa
 	system ("pause");
@@ -65,11 +67,7 @@ int menu (int & opcion){
 		cout << " Opcion: ";
 		cin >> opcion;
 		cin.sync();
-	} while (opcion < 0 || opcion > 2); 
-		
+	} while (opcion < 0 || opcion > 2);
+
 	return opcion;
 }
-
-
-
-

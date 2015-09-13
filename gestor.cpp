@@ -8,8 +8,10 @@ using namespace std;
 
 bool arrancar (tGestor & gestor, string dominio){
 	inicializar (gestor, DOMINIO);
-	return (cargar(gestor.usuarios, dominio) && cargar (gestor.correos, dominio));
+	return (cargar(gestor.usuarios, dominio) & cargar (gestor.correos, dominio));
 }
+
+
 
 void apagar(const tGestor & gestor){
 	system("cls");
@@ -44,7 +46,7 @@ bool crearCuenta(tGestor & gestor){
 	    cout << "Iniciando sesion en " << gestor.dominio << endl;
 		buscarUsuario (gestor.usuarios, id, gestor.usuarioActivo);
 	}
-	else cout << "No se puede aniadir a la lista";	
+	else cout << "No se puede aniadir a la lista";
 	system("pause");
 	return ok;
 }
@@ -63,7 +65,7 @@ bool iniciarSesion (tGestor & gestor){
 		cin >> contrasenia;
 		if (validarContrasenia (gestor.usuarios.usuario[posicion], contrasenia)){
 			gestor.usuarioActivo = posicion;
-			cout << "Iniciando sesion" << gestor.usuarios.usuario[posicion].nombre << endl;
+			cout << "Iniciando sesion de " << gestor.usuarios.usuario[posicion].nombre << endl;
 			ok = true;
 		}
 		else cout << "No se pudo iniciar sesion" << endl;
@@ -111,22 +113,24 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 	if (buscarUsuario (gestor.usuarios, correo.destinatario, posicion)){
 			registro.idcorreo = correo.identificador;
 			registro.leido = true;
-		if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
+		if (insertar(gestor.correos, correo)){
 			registro.leido = false;
 			if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro)){
-					if (insertar(gestor.correos, correo)){
+				if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
 						cout << "Correo enviado" << endl;
 					}
 					else {
-					cout << "ERROR: La lista de correos no admite nuevos correos" << endl;
+					cout << "ERROR: la bandeja del emisor esta llena" << endl;
+					borrar(gestor.correos, correo.identificador);
 				}
 			}
 			else {
 				cout << "ERROR: La bandeja del destinatario esta llena" << endl;
+				borrar(gestor.correos, correo.identificador);
 			}
 		}
 		else{
-			cout << "ERROR: la bandeja del emisor esta llena" << endl;
+			cout << "ERROR: La lista de correos no admite nuevos correos" << endl;
 		}
 	}
 	else{
@@ -139,13 +143,13 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 	string id;
 	int contador = 0;
 	bool ok = false;
-	
+
 	cout << "Selecciona el numero del correo que deseas borrar: ";
-	cin >> opcion;	
+	cin >> opcion;
 	if (opcion > 0 && opcion <= listaReg.contador){
 		id = listaReg.registros[opcion - 1].idcorreo;
 		if (borrar (listaReg, id)){
-			cout << "El mensaje se ha eliminado correctamente" << endl;	
+			cout << "El mensaje se ha eliminado correctamente" << endl;
 			while(contador < gestor.usuarios.contador && !ok){
 				if((buscar(gestor.usuarios.usuario[contador].recibidos, id) != - 1) || (buscar(gestor.usuarios.usuario[contador].enviados, id) != - 1)){
 					ok = true;
@@ -155,7 +159,7 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 			if(!ok && borrar(gestor.correos, id)){
 				cout << "Se ha borrado el mensaje de la base de datos" << endl;
 			}
-		}		
+		}
 	}
 	else{
 		cout << "El correo seleccionado no existe" << endl;

@@ -20,12 +20,13 @@ bool cargar (tListaUsuarios & usuarios, string dominio){
 		while (cargar(usuario, archivo)){
 			aniadir (usuarios, usuario);
 		}
-		archivo.close();
 		ok = true;
 	}
 	else{
 		ok = false;
+		cout << "No se ha podido cargar el archivo de usuarios" << endl;
 	}
+		archivo.close();
 	return ok;
 }
 
@@ -34,6 +35,7 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 	string nombreFichero = dominio + "_" + listaUsuarios;
 	archivo.open(nombreFichero);
 	if (archivo.is_open()){
+//				cout << usuarios.contador;system("pause");
 		for(int i = 0; i < usuarios.contador; i++){
 			guardar(usuarios.usuario[i], archivo);
 		}
