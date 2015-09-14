@@ -115,17 +115,22 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 	if (buscarUsuario (gestor.usuarios, correo.destinatario, posicion)){
 			registro.idcorreo = correo.identificador;
 			registro.leido = false;
-		if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro) && insertar(gestor.correos, correo)){
+		if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro)){
 			registro.leido = false;
-			if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
-				cout << "Correo enviado" << endl;
+			if(insertar(gestor.correos, correo)){
+				if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
+					cout << "Correo enviado" << endl;
+				}
+				else {
+					cout << "ERROR: la bandeja del emisor esta llena" << endl;					
+				}
 			}
-			else {
-				cout << "ERROR: la bandeja del emisor esta llena" << endl;					
-			}			
+			else{
+				cout << "ERROR: Tu lista de correos no admite nuevos correos" << endl;
+			}
 		}
 		else{
-			cout << "ERROR: La bandeja del destinatario esta llena o tu lista de correos no admite nuevos correos" << endl;
+			cout << "ERROR: La bandeja del destinatario esta llena" << endl;
 		}
 	}
 	else{

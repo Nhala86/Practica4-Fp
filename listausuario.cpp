@@ -21,8 +21,7 @@ bool cargar (tListaUsuarios & usuarios, string dominio){
 			if(aniadir (usuarios, usuario)){
 				ok = true;
 			}			
-		}
-		
+		}		
 	}
 	else{
 		cout << "No se ha podido cargar el archivo de usuarios" << endl;
@@ -50,8 +49,7 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario){
 	bool esAniadir = false;
 	int pos;
-	if(usuarios.contador < MAX_USUARIOS){
-		
+	if(usuarios.contador < MAX_USUARIOS){		
 		buscarUsuario(usuarios, usuario.nombre, pos);
 		for(int i = usuarios.contador; i> pos; i--)
 			usuarios.usuario[i] = usuarios.usuario[i -1];
