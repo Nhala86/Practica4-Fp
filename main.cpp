@@ -34,6 +34,7 @@ int main(){
 		system ("cls");
 	}
 	do{
+		system ("cls");
 		opcion = menu(opcion);
 		system ("cls");
 		switch (opcion){

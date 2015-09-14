@@ -20,10 +20,7 @@ bool cargar (tListaUsuarios & usuarios, string dominio){
 		while (cargar(usuario, archivo)){
 			if(aniadir (usuarios, usuario)){
 				ok = true;
-			}
-			/*else{
-				cout << "Lista de usuarios llena. No se pueden registrar mas usuarios" << endl;
-			}*/
+			}			
 		}
 		
 	}
@@ -39,7 +36,6 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 	string nombreFichero = dominio + "_" + listaUsuarios;
 	archivo.open(nombreFichero);
 	if (archivo.is_open()){
-//				cout << usuarios.contador;system("pause");
 		for(int i = 0; i < usuarios.contador; i++){
 			guardar(usuarios.usuario[i], archivo);
 		}
@@ -53,10 +49,14 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 
 bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario){
 	bool esAniadir = false;
+	int pos;
 	if(usuarios.contador < MAX_USUARIOS){
-		usuarios.usuario[usuarios.contador] = usuario;
+		
+		buscarUsuario(usuarios, usuario.nombre, pos);
+		for(int i = usuarios.contador; i> pos; i--)
+			usuarios.usuario[i] = usuarios.usuario[i -1];
+		usuarios.usuario[pos] = usuario;
 		usuarios.contador++;
-		ordenar (usuarios);
 		esAniadir = true;
 	}
 	return esAniadir;
@@ -79,17 +79,4 @@ bool buscarUsuario (const tListaUsuarios & usuarios, string id, int & posicion){
 	if (encontrado) posicion = mitad;
 	else posicion = ini;
 	return encontrado;
-}
-
-void ordenar (tListaUsuarios & usuarios){
-	tUsuario nuevo;
-	int posicion = 0;
-	nuevo = usuarios.usuario[usuarios.contador - 1];
-	while ((posicion < usuarios.contador -1) && !(usuarios.usuario[posicion].nombre > nuevo.nombre)){
-		posicion ++;
-	}
-	for (int j = usuarios.contador - 1; j > posicion; j--){
-		usuarios.usuario[j] = usuarios.usuario[j - 1];
-	}
-	usuarios.usuario[posicion] = nuevo;
 }

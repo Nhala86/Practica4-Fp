@@ -49,10 +49,4 @@ bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario);
 
 bool buscarUsuario (const tListaUsuarios & usuarios, string id, int & posicion);
 
-/**
-** Ordena los usuarios segun su posicion
-**/
-
-void ordenar (tListaUsuarios & usuarios);
-
 #endif

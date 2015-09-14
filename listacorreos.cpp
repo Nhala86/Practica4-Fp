@@ -38,7 +38,6 @@ void guardar (const tListaCorreos & correos, string dominio){
 	string ficheroCorreo = dominio + "_" + mailCorreo;
 	archivo.open(ficheroCorreo);
 	if (archivo.is_open()){
-//		cout << correos.contador;system("pause");
 		for(int i = 0; i < correos.contador; i++){
 			guardar(correos.listaMail[i], archivo);
 		}
@@ -53,10 +52,10 @@ void guardar (const tListaCorreos & correos, string dominio){
 bool insertar(tListaCorreos & correos, const tCorreo & correo){
 	tCorreo temp;
 	bool esInsertado = false;
-	 int i = correos.contador;
+	int i = correos.contador;
 	if (correos.contador < MAX_CORREOS){
 		correos.listaMail[correos.contador] = correo;
-		while(correo.identificador < correos.listaMail[i - 1].identificador && i != 0){
+		while(correo.identificador < correos.listaMail[i - 1].identificador || i != 0){
 			temp = correos.listaMail[i - 1];
 			correos.listaMail[i - 1] = correos.listaMail[i];
 			correos.listaMail[i] = temp;

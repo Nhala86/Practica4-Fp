@@ -7,8 +7,6 @@ using namespace std;
 
 #include"correo.h"
 
-
-
 void correoNuevo(tCorreo & correo, string emisor){
 	correo.fecha = time(0);
 	correo.emisor = emisor;
