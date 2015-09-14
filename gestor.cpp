@@ -22,7 +22,7 @@ void apagar(const tGestor & gestor){
 
 bool crearCuenta(tGestor & gestor){
 	tUsuario usuario;
-	bool ok = false;
+	bool ok;
 	int posicion;
 	string id, contrasenia;
 	cout << "Selecciona tu id: ";
@@ -39,14 +39,17 @@ bool crearCuenta(tGestor & gestor){
 	cout << "Selecciona una contrasenia: ";
 	cin >> contrasenia;
 	cin.sync();
-	inicializar (usuario, id, contrasenia);
-	if (aniadir (gestor.usuarios, usuario)){
+	inicializar (usuario, id, contrasenia);	
+	if (aniadir (gestor.usuarios, usuario)){		
 		ok = true;
 		cout << "Se creo correctamente su cuenta" << endl;
 	    cout << "Iniciando sesion en " << gestor.dominio << endl;
 		buscarUsuario (gestor.usuarios, id, gestor.usuarioActivo);
-	}
-	else cout << "No se puede aniadir a la lista";
+	}	
+	else{		
+		cout << " No se puede aniadir a la lista " << endl;
+		ok = false;		
+	} 
 	system("pause");
 	return ok;
 }

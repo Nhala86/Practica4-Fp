@@ -10,7 +10,7 @@ void inicializar (tListaUsuarios & usuarios){
 }
 
 bool cargar (tListaUsuarios & usuarios, string dominio){
-	bool ok;
+	bool ok = false;
 	ifstream archivo;
 	inicializar(usuarios);
 	string nombreFichero = dominio + "_" + listaUsuarios;
@@ -18,15 +18,19 @@ bool cargar (tListaUsuarios & usuarios, string dominio){
 	if (archivo.is_open()){
 		tUsuario usuario;
 		while (cargar(usuario, archivo)){
-			aniadir (usuarios, usuario);
+			if(aniadir (usuarios, usuario)){
+				ok = true;
+			}
+			/*else{
+				cout << "Lista de usuarios llena. No se pueden registrar mas usuarios" << endl;
+			}*/
 		}
-		ok = true;
+		
 	}
 	else{
-		ok = false;
 		cout << "No se ha podido cargar el archivo de usuarios" << endl;
 	}
-		archivo.close();
+	archivo.close();
 	return ok;
 }
 
@@ -49,7 +53,7 @@ void guardar (const tListaUsuarios & usuarios, string dominio){
 
 bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario){
 	bool esAniadir = false;
-	if(usuarios.contador <= MAX_USUARIOS){
+	if(usuarios.contador < MAX_USUARIOS){
 		usuarios.usuario[usuarios.contador] = usuario;
 		usuarios.contador++;
 		ordenar (usuarios);
