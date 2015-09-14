@@ -20,8 +20,8 @@ bool cargar(tListaCorreos & correos, string dominio){
 	if (archivo.is_open()){
 		tCorreo correo;
 		while (cargar (correo, archivo)){
-		system("pause");			
 			insertar(correos, correo);
+			system("pause");
 		}
 		esCargar = true;
 	}
