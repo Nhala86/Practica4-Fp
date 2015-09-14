@@ -112,28 +112,20 @@ void leerCorreo(tGestor & gestor, tListaRegistros & listaReg){
 void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 	tRegistro registro;
 	int posicion;
-
 	if (buscarUsuario (gestor.usuarios, correo.destinatario, posicion)){
 			registro.idcorreo = correo.identificador;
-			registro.leido = true;
-		if (insertar(gestor.correos, correo)){
 			registro.leido = false;
-			if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro)){
-				if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
-						cout << "Correo enviado" << endl;
-					}
-					else {
-					cout << "ERROR: la bandeja del emisor esta llena" << endl;
-					borrar(gestor.correos, correo.identificador);
-				}
+		if (insertar (gestor.usuarios.usuario[posicion].recibidos, registro) && insertar(gestor.correos, correo)){
+			registro.leido = false;
+			if (insertar (gestor.usuarios.usuario[gestor.usuarioActivo].enviados, registro)){
+				cout << "Correo enviado" << endl;
 			}
 			else {
-				cout << "ERROR: La bandeja del destinatario esta llena" << endl;
-				borrar(gestor.correos, correo.identificador);
-			}
+				cout << "ERROR: la bandeja del emisor esta llena" << endl;					
+			}			
 		}
 		else{
-			cout << "ERROR: La lista de correos no admite nuevos correos" << endl;
+			cout << "ERROR: La bandeja del destinatario esta llena o tu lista de correos no admite nuevos correos" << endl;
 		}
 	}
 	else{
@@ -146,7 +138,6 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 	string id;
 	int contador = 0;
 	bool ok = false;
-
 	cout << "Selecciona el numero del correo que deseas borrar: ";
 	cin >> opcion;
 	if (opcion > 0 && opcion <= listaReg.contador){
